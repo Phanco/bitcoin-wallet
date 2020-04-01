@@ -24,10 +24,8 @@ app.use(lusca.xssProtection(true));
 app.get("/", homeController.index);
 
 app.get("/bitcoin/newAddress", bitcoinController.newAddress);
-app.get("/bitcoin/listAddresses", bitcoinController.listAddresses);
 
 app.get("/bitcoin/newMultiSigAddress", bitcoinController.newMultiSigAddress);
-app.get("/bitcoin/listAddresses", bitcoinController.listAddresses);
 
 
 export default app;
