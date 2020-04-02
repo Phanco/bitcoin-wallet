@@ -24,6 +24,10 @@ Finally, navigate to `http://localhost:3000` and you should see the template bei
 GET /
 ```
 #### Response
+| Parameter | Type | Description |
+| :--- | :--- | :--- |
+| `path` | `integer` | Derivation Path, stated at .env. |
+| `pubkey` | `string` | BIP32 Extended Public Key. |
 
     HTTP/1.1 200 OK
     Date: Thu, 01 Apr 2020 12:36:30 GMT

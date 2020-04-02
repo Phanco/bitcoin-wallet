@@ -25,16 +25,16 @@ GET /bitcoin/newAddress?keyIndex=1&pathIndex=0&count=100
 ```
 | Parameter | Type | Description |
 | :--- | :--- | :--- |
-| `keyIndex` | `integer` | **Required**. Index of pubKey, registered at .env |
-| `pathIndex` | `integer` | **Required**. First address would start from this path |
-| `count` | `integer` | **Default=1**. Number of addresses to generate |
+| `keyIndex` | `integer` | **Required**. Index of pubKey, registered at .env. |
+| `pathIndex` | `integer` | **Required**. First address would start from this path. |
+| `count` | `integer` | **Default=1**. Number of addresses to generate. |
 
 #### Response
 | Parameter | Type | Description |
 | :--- | :--- | :--- |
 | `index` | `integer` | Index used at path. |
-| `address` | `string` | Segwit address in ```bech32``` format |
-| `addressLegacy` | `string[]` | Segwit address, wrapped by ```P2SH```  | 
+| `address` | `string` | Segwit address in ```bech32``` format. |
+| `addressLegacy` | `string` | Segwit address, wrapped by ```P2SH```.  | 
 
     HTTP/1.1 200 OK
     Date: Thu, 01 Apr 2020 12:36:30 GMT
@@ -63,19 +63,19 @@ GET /bitcoin/newMultiSigAddress?m=2&keyIndexes=0,1&pathIndexes=0,0
 ```
 | Parameter | Type | Description |
 | :--- | :--- | :--- |
-| `m` | `integer` | **Required**. Number of singer required. Less than or equal to length of keyIndexes and pathIndexes |
-| `keyIndexes` | `string` | **Required**. Indexes of pubKey, registered at .env. Separate by ",". Equal length to pathIndexes |
-| `pathIndexes` | `string` | **Required**. Path of respective pubKeys. Separate by ",". Equal length to keyIndexes  | 
+| `m` | `integer` | **Required**. Number of singer required. Less than or equal to length of keyIndexes and pathIndexes. |
+| `keyIndexes` | `string` | **Required**. Indexes of pubKey, registered at .env. Separate by ",". Equal length to pathIndexes. |
+| `pathIndexes` | `string` | **Required**. Path of respective pubKeys. Separate by ",". Equal length to keyIndexes.  | 
 
 #### Response
 | Parameter | Type | Description |
 | :--- | :--- | :--- |
 | `m` | `integer` | Number of singer required. |
-| `n` | `string` | Total number of singers |
-| `pubkeys` | `string[]` | List of pubkeys involved in Multisig  | 
-| `address` | `string` |  SegWit Multisig Address ```P2WSH(P2MS(m, pubkeys))``` | 
-| `addressWSHLegacy` | `string` |  SegWit-P2SH Multisig Address ```P2SH(P2WSH(P2MS(m, pubkeys)))``` | 
-| `address` | `addressLegacy` | Non-Segwit P2SH Multisig Address ```P2SH(P2MS(m, pubkeys))```  | 
+| `n` | `integer` | Total number of singers. |
+| `pubkeys` | `string[]` | List of pubkeys involved in Multisig.  | 
+| `address` | `string` |  SegWit Multisig Address ```P2WSH(P2MS(m, pubkeys))```. | 
+| `addressWSHLegacy` | `string` |  SegWit-P2SH Multisig Address ```P2SH(P2WSH(P2MS(m, pubkeys)))```. | 
+| `address` | `addressLegacy` | Non-Segwit P2SH Multisig Address ```P2SH(P2MS(m, pubkeys))```.  | 
 
     HTTP/1.1 200 OK
     Date: Thu, 01 Apr 2020 12:36:30 GMT
