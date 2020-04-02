@@ -40,16 +40,19 @@ export const newAddress = (req: Request, res: Response) => {
 };
 
 export const newMultiSigAddress = (req: Request, res: Response) => {
-    const { n: nRaw, m: mRaw, keyIndexes: keyIndexesRaw, pathIndexes: pathIndexesRaw, count = 1 } = req.query;
+    const { m: mRaw, keyIndexes: keyIndexesRaw, pathIndexes: pathIndexesRaw } = req.query;
     try {
-        const n = parseFloat(nRaw);
+        const extendedPubKeys = keyIndexesRaw.split(",").map(index => _getPubKey(parseInt(index)));
+        const pathIndexes = pathIndexesRaw.split(",").map(index => parseInt(index));
         const m = parseFloat(mRaw);
-        if ( m > n ) {
+        if (extendedPubKeys.length !== pathIndexes.length) {
+            throw "keyIndexes and pathIndexes do not have matching length.";
+        }
+        if ( m > extendedPubKeys.length ) {
             throw "m must be less-than-or-equal n";
         }
 
-        const extendedPubKeys = keyIndexesRaw.split(",").map(index => _getPubKey(parseInt(index)));
-        const pathIndexes = pathIndexesRaw.split(",").map(index => parseInt(index));
+
         const pubkeys = extendedPubKeys
             .map((pubkey, index) =>
                 bitcoin
@@ -60,15 +63,18 @@ export const newMultiSigAddress = (req: Request, res: Response) => {
             );
         return responseOK(res, {
             m,
-            n,
+            n: extendedPubKeys.length,
             pubkeys: pubkeys.map(pubkey => Buffer.from(pubkey).toString("hex")),
             address : bitcoin.payments.p2wsh({
                 redeem: bitcoin.payments.p2ms({ m, pubkeys }),
             }).address,
-            addressLegacy: bitcoin.payments.p2sh({
+            addressWSHLegacy: bitcoin.payments.p2sh({
                 redeem: bitcoin.payments.p2wsh({
                     redeem: bitcoin.payments.p2ms({ m, pubkeys })
                 })
+            }).address,
+            addressLegacy: bitcoin.payments.p2sh({
+                    redeem: bitcoin.payments.p2ms({ m, pubkeys })
             }).address
         });
     } catch (err) {
@@ -76,8 +82,3 @@ export const newMultiSigAddress = (req: Request, res: Response) => {
     }
 
 };
-
-export const listAddresses = (req: Request, res: Response) => {
-
-};
-

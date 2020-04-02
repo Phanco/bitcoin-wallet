@@ -31,8 +31,6 @@ app.use(lusca_1.default.xssProtection(true));
  */
 app.get("/", homeController.index);
 app.get("/bitcoin/newAddress", bitcoinController.newAddress);
-app.get("/bitcoin/listAddresses", bitcoinController.listAddresses);
 app.get("/bitcoin/newMultiSigAddress", bitcoinController.newMultiSigAddress);
-app.get("/bitcoin/listAddresses", bitcoinController.listAddresses);
 exports.default = app;
 //# sourceMappingURL=app.js.map

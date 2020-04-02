@@ -40,15 +40,17 @@ exports.newAddress = (req, res) => {
     }
 };
 exports.newMultiSigAddress = (req, res) => {
-    const { n: nRaw, m: mRaw, keyIndexes: keyIndexesRaw, pathIndexes: pathIndexesRaw, count = 1 } = req.query;
+    const { m: mRaw, keyIndexes: keyIndexesRaw, pathIndexes: pathIndexesRaw } = req.query;
     try {
-        const n = parseFloat(nRaw);
-        const m = parseFloat(mRaw);
-        if (m > n) {
-            throw "m must be less-than-or-equal n";
-        }
         const extendedPubKeys = keyIndexesRaw.split(",").map(index => _getPubKey(parseInt(index)));
         const pathIndexes = pathIndexesRaw.split(",").map(index => parseInt(index));
+        const m = parseFloat(mRaw);
+        if (extendedPubKeys.length !== pathIndexes.length) {
+            throw "keyIndexes and pathIndexes do not have matching length.";
+        }
+        if (m > extendedPubKeys.length) {
+            throw "m must be less-than-or-equal n";
+        }
         const pubkeys = extendedPubKeys
             .map((pubkey, index) => bitcoin
             .bip32
@@ -57,22 +59,23 @@ exports.newMultiSigAddress = (req, res) => {
             .publicKey);
         return response_1.responseOK(res, {
             m,
-            n,
+            n: extendedPubKeys.length,
             pubkeys: pubkeys.map(pubkey => Buffer.from(pubkey).toString("hex")),
             address: bitcoin.payments.p2wsh({
                 redeem: bitcoin.payments.p2ms({ m, pubkeys }),
             }).address,
-            addressLegacy: bitcoin.payments.p2sh({
+            addressWSHLegacy: bitcoin.payments.p2sh({
                 redeem: bitcoin.payments.p2wsh({
                     redeem: bitcoin.payments.p2ms({ m, pubkeys })
                 })
+            }).address,
+            addressLegacy: bitcoin.payments.p2sh({
+                redeem: bitcoin.payments.p2ms({ m, pubkeys })
             }).address
         });
     }
     catch (err) {
         return response_1.responseError(res, 400, err);
     }
-};
-exports.listAddresses = (req, res) => {
 };
 //# sourceMappingURL=bitcoin.js.map
