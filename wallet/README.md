@@ -8,6 +8,7 @@ This service exports BIP32 Extended Public Key (xpub) so that the private won't 
 cd wallet
 npm install
 ```
+- Edit ```.env.example``` or make a copy to ```.env```. 
 - Build and run the project
 ```
 npm run build

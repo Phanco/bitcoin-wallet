@@ -8,12 +8,12 @@ Convert Extended Public Key, provided by wallet, into addresses.
 cd wallet
 npm install
 ```
+- Edit ```.env.example``` or make a copy to ```.env```. 
 - Build and run the project
 ```
 npm run build
 npm start
 ```
-
 Finally, navigate to `http://localhost:3001` and you should see the template being served and rendered locally!
 
 ## Rest API
