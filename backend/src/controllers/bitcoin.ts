@@ -12,13 +12,9 @@ const _getPubKey = (index: number) => {
     return publicKeyes[index];
 };
 
-interface NewAddressInterface {
-    keyIndex: number;
-    pathIndex: number;
-    count: number;
-}
+
 export const newAddress = (req: Request, res: Response) => {
-    const { keyIndex, pathIndex, count = 1 }: NewAddressInterface = req.query;
+    const { keyIndex, pathIndex, count = 1 } = req.query;
     const addresses = [];
     try {
         const network = bitcoin.networks.bitcoin;
